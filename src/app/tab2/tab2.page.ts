@@ -40,6 +40,7 @@ export class Tab2Page {
       duration: 2000,
       color: clr
     })
+    this.miToast.present();
   }
 
 
@@ -47,7 +48,33 @@ export class Tab2Page {
   ionViewDidEnter(){
     
   }
-
+  /*
+    PARA AÑADIR NOTA CON THEN-CATCH:
+  
+    public test(){
+      this.ns.addNote({
+        title:'jaja',
+        description:'jojo'
+      }).then((response)=>{
+        console.log(response);
+      }).catch((err)=>{
+        console.log(err);
+      })
+  
+  
+      CON TRY-CATCH:
+       
+    try{
+      let id = await this.ns.addNote({
+        tittle: 'prueba',
+        description: 'inserccion'
+      })
+      console.log(id)
+    }catch{
+      console.log(error)
+    }
+    
+  */
   public async addNote(){
     let newNote:Note={
       title:this.formNote.get("title").value,

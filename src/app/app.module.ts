@@ -10,6 +10,14 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+export function loadTraslator(http:HttpClient){
+  return new TranslateHttpLoader(http, './assets/i18n/','.json');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,12 +25,26 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
+    TranslateModule.forRoot({
+      loader : {
+        provide: TranslateLoader,
+        useFactory : (loadTraslator),
+        deps : [HttpClient]
+      }
+    })
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

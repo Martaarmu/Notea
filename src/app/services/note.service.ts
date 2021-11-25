@@ -26,7 +26,6 @@ export class NoteService {
         reject(error);
       }
     })
-
   }
 
   public getNotes(): Observable<Note[]> {
@@ -64,6 +63,10 @@ export class NoteService {
        
       })
     
+  }
+
+  public remove(id:string):Promise<void>{
+    return this.myCollection.doc(id).delete();
   }
 
 
