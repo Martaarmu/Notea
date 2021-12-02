@@ -28,6 +28,9 @@ export class NoteService {
     })
   }
 
+  //getNotesbyPage()->github
+  //funcion flecha ref=>{} cuando solo tiene un return podemos hacer ref=>ref.limit.......
+
   public getNotes(): Observable<Note[]> {
     return new Observable((observer) => {
       let result: Note[] = [];

@@ -15,6 +15,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LocalStorageService } from './services/local-storage.service';
+import { AuthService } from './services/auth.service';
+import { AuthguardService } from './services/authguard.service';
 
 export function loadTraslator(http:HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/','.json');
@@ -45,7 +47,7 @@ export function loadTraslator(http:HttpClient){
       }
     })
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, LocalStorageService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy}, LocalStorageService, AuthService, AuthguardService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
