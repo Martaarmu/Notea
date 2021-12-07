@@ -9,7 +9,8 @@ import { Note } from '../model/Note';
 })
 export class NoteService {
 
-  //1º conectarnos a la BD -> AngularFirestore
+
+  private last:any=null;
 
   private myCollection: AngularFirestoreCollection
   constructor(private db: AngularFirestore) {
@@ -28,9 +29,48 @@ export class NoteService {
     })
   }
 
-  //getNotesbyPage()->github
   //funcion flecha ref=>{} cuando solo tiene un return podemos hacer ref=>ref.limit.......
+    /**
+   * getNotesByPage() -> page=1,criteria=undefined
+   * getNotesByPage(2) -> page=2, criteria=undefined
+   * getNotesByPage(2,'title')
+   * .orderBy(criteria,'desc')
+   * @param page 
+   * @param criteria 
+   */
+     public getNotesByPage(all?):Observable<Note[]> {
+      if(all){
+        this.last=null;
+      }
+      return new Observable((observer) => {
+        let result: Note[] = [];
+        let query=null;
+        if(this.last){
+          query=this.db.collection<any>(environment.firebaseConfig.todoCollection,
+            ref => ref.limit(10).startAfter(this.last));
+        }else{
+          query=this.db.collection<any>(environment.firebaseConfig.todoCollection,
+            ref => ref.limit(10));
+        }
+        
+          
+          query.get()
+          .subscribe(
+            (data: firebase.default.firestore.QuerySnapshot<firebase.default.firestore.DocumentData>) => {
+              data.docs.forEach((d: firebase.default.firestore.DocumentData) => {
+                this.last=d;
+                let tmp = d.data(); //devuelve el objeto almacenado -> la nota con title y description
+                let id = d.id; //devuelve la key del objeto
+                result.push({ 'key': id, ...tmp });
+                //operador spread-> 'title':tmp.title,'description':tmp.description
+              })
+              observer.next(result);  ///este es el return del observable que devolvemos
+              observer.complete();
+            }) //final del subscribe
+      }); //final del return observable
+    }
 
+    ///INUTILIZADO ??
   public getNotes(): Observable<Note[]> {
     return new Observable((observer) => {
       let result: Note[] = [];

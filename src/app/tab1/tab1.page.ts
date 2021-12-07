@@ -1,6 +1,8 @@
-import { Component, Pipe } from '@angular/core';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { Component, Pipe, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController, IonInfiniteScroll, LoadingController, ToastController } from '@ionic/angular';
 import { Note } from '../model/Note';
+import { AuthService } from '../services/auth.service';
 import { NoteService } from '../services/note.service';
 
 @Component({
@@ -10,13 +12,20 @@ import { NoteService } from '../services/note.service';
 })
 
 export class Tab1Page {
+  @ViewChild(IonInfiniteScroll) infinite:IonInfiniteScroll;
 
   public notas: Note[] = [];
   public miLoading: HTMLIonLoadingElement;
   
 
   constructor(private ns: NoteService, private loading: LoadingController, private toast: ToastController,
-    public alertController: AlertController) { }
+    public alertController: AlertController,
+    private authS:AuthService,
+    private router:Router) { }
+
+    async ionViewDidEnter() {
+      await this.cargaNotas();
+    }
 
   async presentLoading() {
     this.miLoading = await this.loading.create({
@@ -34,43 +43,48 @@ export class Tab1Page {
     miToast.present();
   }
 
-
-  async ionViewDidEnter() {
-    await this.cargaNotas();
-  }
-
-
-
-
-
-  public async cargaNotas(event?) {
-    //mostrar loading
-    this.notas = [];
-    if (!event) {
+  public async cargaNotas(event?){
+    if(this.infinite){
+      this.infinite.disabled=false;
+    }
+    if(!event){
       await this.presentLoading();
     }
-    try {
-      this.notas = await this.ns.getNotes().toPromise();
-
-    } catch (err) {
-      console.log(err);
-      this.presentToast("Error cargando datos", "danger");
-      //notificar el error al usuario
-    } finally {
-      //ocultar loading
-
-
-      //para que el resfresh se suba
-      if (event) {
+    this.notas=[];
+    try{
+      this.notas=await this.ns.getNotesByPage('algo').toPromise();
+    }catch(err){
+      console.error(err);
+      await this.presentToast("Error cargando datos","danger");
+    } finally{
+      if(event){
         event.target.complete();
-      } else {
+      }else{
         await this.miLoading.dismiss();
       }
     }
   }
+  public async logout(){
+    await this.authS.logout();
+    this.router.navigate(['']);
+  }
+  
+   public async cargaInfinita($event){
+    console.log("CARGAND");
+    let nuevasNotas=await this.ns.getNotesByPage().toPromise();
+    if(nuevasNotas.length<10){
+      $event.target.disabled=true;
+    }
+    this.notas=this.notas.concat(nuevasNotas);
+    $event.target.complete();
+  }
+
+
+
+  
 
   public async borra(nota: Note) {
-    //////PEDIR CONFIMACION!!(MODAL)
+   
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirmación',

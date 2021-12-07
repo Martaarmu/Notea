@@ -3,6 +3,11 @@
     <ion-title>
       Notas
     </ion-title>
+    <ion-buttons slot="secondary">
+      <ion-button fill="outline" (click)="logout()">
+        <ion-icon name="caret-down-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -40,4 +45,10 @@
   
     
   </ion-list>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="cargaInfinita($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

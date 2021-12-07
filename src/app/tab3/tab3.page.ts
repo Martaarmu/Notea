@@ -20,7 +20,7 @@ export class Tab3Page {
       console.log(data);
     })*/
   }
-  ionViewDidEnter(){
+  async ionViewDidEnter(){
     const lang=this.traductor.getDefaultLang();
     if(lang=='es'){
       this.mitoogle.checked=false;

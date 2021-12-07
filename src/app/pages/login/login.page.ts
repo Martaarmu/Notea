@@ -16,15 +16,14 @@ export class LoginPage implements OnInit {
   private isAndroid:boolean; //true no ejecuta
 
   constructor(private platform:Platform, private authS:AuthService, private router:Router) {
-    this.isAndroid = platform.is("android");
-    if(!this.isAndroid){ //si no es android
-      //esto es solo para web
-      GoogleAuth.init(); //lee la config clientid del meta del index.html
-    }
+    
     
    }
 
   ngOnInit() {
+    if(this.authS.isLogged()){
+      this.router.navigate(['private/tabs/tab1']);
+    }
   }
 
   ionViewWillEnter(){
@@ -35,9 +34,7 @@ export class LoginPage implements OnInit {
 
   public async singin(){
     try {
-      let user:User = await GoogleAuth.signIn();
-      this.userinfo=user;
-      this.authS.user=user;
+      await this.authS.login();
       this.router.navigate(['private/tabs/tab1']);
     } catch (err) {
       console.log(err);
