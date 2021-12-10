@@ -7,6 +7,7 @@ import { NoteService } from '../services/note.service';
 //
 import { ModalController } from '@ionic/angular';
 import { EditNotePage } from '../pages/edit-note/edit-note.page';
+import { UtilsService } from '../services/utils.service';
 
 
 @Component({
@@ -15,84 +16,64 @@ import { EditNotePage } from '../pages/edit-note/edit-note.page';
   styleUrls: ['tab1.page.scss']
 })
 
-
-
 export class Tab1Page {
-  @ViewChild(IonInfiniteScroll) infinite:IonInfiniteScroll;
-
+  @ViewChild(IonInfiniteScroll) infinite: IonInfiniteScroll;
 
   public notas: Note[] = [];
-  public miLoading: HTMLIonLoadingElement;
-  
 
-  constructor(private ns: NoteService, private loading: LoadingController, private toast: ToastController,
+  constructor(private ns: NoteService,
+    private utils: UtilsService,
     public alertController: AlertController,
-    private authS:AuthService,
-    private router:Router,
-    public modalController:ModalController) { }
+    private authS: AuthService,
+    private router: Router,
+    public modalController: ModalController) { }
 
-    async ionViewDidEnter() {
-      await this.cargaNotas();
-    }
-
-  async presentLoading() {
-    this.miLoading = await this.loading.create({
-      message: 'Por favor espere...',
-    });
-    await this.miLoading.present();
+  async ionViewDidEnter() {
+    await this.cargaNotas();
   }
 
-  async presentToast(msg: string, clr: string) {
-    const miToast = await this.toast.create({
-      message: msg,
-      duration: 2000,
-      color: clr
-    })
-    miToast.present();
-  }
-
-  public async cargaNotas(event?){
-    if(this.infinite){
-      this.infinite.disabled=false;
+  public async cargaNotas(event?) {
+    if (this.infinite) {
+      this.infinite.disabled = false;
     }
-    if(!event){
-      await this.presentLoading();
+    if (!event) {
+      await this.utils.presentLoading();
     }
-    this.notas=[];
-    try{
-      this.notas=await this.ns.getNotesByPage('algo').toPromise();
-    }catch(err){
+    this.notas = [];
+    try {
+      this.notas = await this.ns.getNotesByPage('algo').toPromise();
+    } catch (err) {
       console.error(err);
-      await this.presentToast("Error cargando datos","danger");
-    } finally{
-      if(event){
+      await this.utils.presentToast("Error cargando datos", "danger");
+    } finally {
+      if (event) {
         event.target.complete();
-      }else{
-        await this.miLoading.dismiss();
+      } else {
+        await this.utils.miLoading.dismiss();
       }
     }
   }
-  public async logout(){
+  public async logout() {
     await this.authS.logout();
     this.router.navigate(['']);
   }
 
-   public async cargaInfinita($event){
+  public async cargaInfinita($event) {
     console.log("CARGAND");
-    let nuevasNotas=await this.ns.getNotesByPage().toPromise();
-    if(nuevasNotas.length<10){
-      $event.target.disabled=true;
+    let nuevasNotas = await this.ns.getNotesByPage().toPromise();
+    if (nuevasNotas.length < 10) {
+      $event.target.disabled = true;
     }
-    this.notas=this.notas.concat(nuevasNotas);
+    this.notas = this.notas.concat(nuevasNotas);
     $event.target.complete();
   }
 
 
 
-  
+
 
   public async borra(nota: Note) {
-   
+
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Confirmación',
@@ -100,7 +81,7 @@ export class Tab1Page {
       buttons: [
         {
           text: 'CANCELAR',
-          
+
           handler: (blah) => {
             //responde cancel no hacemos nada 
           }
@@ -109,14 +90,14 @@ export class Tab1Page {
           handler: async () => {
             // okey -> borramos de la bd
 
-            await this.presentLoading();
+            await this.utils.presentLoading();
             await this.ns.remove(nota.key);
             //Para recargar la lista hacer esto es muy cutre!! -> await this.cargaNotas
             let i = this.notas.indexOf(nota, 0);
             if (i > -1) {
               this.notas.splice(i, 1);
             }
-            await this.miLoading.dismiss();
+            await this.utils.miLoading.dismiss();
 
           }
         }
@@ -126,51 +107,45 @@ export class Tab1Page {
     await alert.present();
   }
 
-  
 
 
 
 
-  public async edita(nota:Note) { 
-   
+
+  public async edita(nota: Note) {
+
     const modal = await this.modalController.create({
       component: EditNotePage,
       cssClass: 'my-custom-class',
-      componentProps: {
-         nota
-      }
+      componentProps: { nota }
     });
-    
-
     await modal.present();
     await modal.onDidDismiss();
     await this.cargaNotas();
-     
-    
   }
 
- 
-   async buscar($event){
 
-    let notes:Note[]=[]
-    const filtro:string=$event.detail.value;
-    if(filtro.length>1){
+  public async buscar($event) {
 
-      for(let note of this.notas){
-        if(note.title.includes(filtro)){
+    let notes: Note[] = []
+    const filtro: string = $event.detail.value;
+    if (filtro.length > 1) {
+
+      for (let note of this.notas) {
+        if (note.title.includes(filtro)) {
           notes.push(note);
         }
       };
-      this.notas=notes;
-    }else if(filtro.length==0){
-    await this.cargaNotas();
+      this.notas = notes;
+    } else if (filtro.length == 0) {
+      await this.cargaNotas();
 
-    } 
+    }
   }
-    
-    
 
-  
+
+
+
 
 
 
