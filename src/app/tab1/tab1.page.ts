@@ -1,9 +1,13 @@
-import { Component, Pipe, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonInfiniteScroll, LoadingController, ToastController } from '@ionic/angular';
 import { Note } from '../model/Note';
 import { AuthService } from '../services/auth.service';
 import { NoteService } from '../services/note.service';
+//
+import { ModalController } from '@ionic/angular';
+import { EditNotePage } from '../pages/edit-note/edit-note.page';
+
 
 @Component({
   selector: 'app-tab1',
@@ -11,8 +15,11 @@ import { NoteService } from '../services/note.service';
   styleUrls: ['tab1.page.scss']
 })
 
+
+
 export class Tab1Page {
   @ViewChild(IonInfiniteScroll) infinite:IonInfiniteScroll;
+
 
   public notas: Note[] = [];
   public miLoading: HTMLIonLoadingElement;
@@ -21,7 +28,8 @@ export class Tab1Page {
   constructor(private ns: NoteService, private loading: LoadingController, private toast: ToastController,
     public alertController: AlertController,
     private authS:AuthService,
-    private router:Router) { }
+    private router:Router,
+    public modalController:ModalController) { }
 
     async ionViewDidEnter() {
       await this.cargaNotas();
@@ -68,7 +76,7 @@ export class Tab1Page {
     await this.authS.logout();
     this.router.navigate(['']);
   }
-  
+
    public async cargaInfinita($event){
     console.log("CARGAND");
     let nuevasNotas=await this.ns.getNotesByPage().toPromise();
@@ -123,10 +131,48 @@ export class Tab1Page {
 
 
 
-  public async edita(nota: Note) { }
+  public async edita(nota:Note) { 
+   
+    const modal = await this.modalController.create({
+      component: EditNotePage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+         nota
+      }
+    });
+    
+
+    await modal.present();
+    await modal.onDidDismiss();
+    await this.cargaNotas();
+     
+    
+  }
+
+ 
+   async buscar($event){
+
+    let notes:Note[]=[]
+    const filtro:string=$event.detail.value;
+    if(filtro.length>1){
+
+      for(let note of this.notas){
+        if(note.title.includes(filtro)){
+          notes.push(note);
+        }
+      };
+      this.notas=notes;
+    }else if(filtro.length==0){
+    await this.cargaNotas();
+
+    } 
+  }
+    
+    
+
+  
+
 
 
 
 }
-
-

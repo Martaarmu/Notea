@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/compat/firestore';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Note } from '../model/Note';
 
@@ -11,8 +11,8 @@ export class NoteService {
 
 
   private last:any=null;
-
   private myCollection: AngularFirestoreCollection
+
   constructor(private db: AngularFirestore) {
     this.myCollection = db.collection<any>(environment.firebaseConfig.todoCollection);
   }
@@ -95,9 +95,10 @@ export class NoteService {
       let note:Note=null;
       try {
         let result:firebase.default.firestore.DocumentData=await this.myCollection.doc(id).get().toPromise; //se podria usar un subcribe
-        note = {
+        note=result.data;
+        /*note = {
           id:result.id, ... result.data()
-        }
+        }*/
         resolve(note);
       } catch (error) {
         reject(error)
@@ -112,11 +113,21 @@ export class NoteService {
     return this.myCollection.doc(id).delete();
   }
 
+  public  editNote(note:Note): Promise<string> {
 
+    return new Promise(async (resolve, reject) => {
+      try {
+        let response: any = await this.myCollection.doc(note.key).update({title:note.title,
+          description:note.description}); 
+        resolve(response);
+      } catch (error) {
+        reject(error);
+      }
+    })
 
+  }
 
-
-
+ 
 }
 
 

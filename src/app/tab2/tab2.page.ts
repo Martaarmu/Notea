@@ -88,6 +88,7 @@ export class Tab2Page {
     this.miLoading && this.miLoading.dismiss();
     await this.presentToast("Nota agregada correctamente", "success");
     this.formNote.reset();
+    
     } catch (err) {
       console.log(err);
       this.miLoading && this.miLoading.dismiss();

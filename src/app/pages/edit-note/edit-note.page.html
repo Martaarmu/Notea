@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editando nota</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon name="close-circle" style="zoom:2.0" (click)="cerrar()"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  
+  <form [formGroup]="formNote" (ngSubmit)="editNote()">
+    <ion-item>
+      
+      <ion-input type="text" formControlName="title" [(ngModel)]="this.nota.title"></ion-input>
+    </ion-item>
+    <ion-item>
+      
+      <ion-textarea type="text" formControlName="description" [(ngModel)]="this.nota.description"></ion-textarea>
+    </ion-item>
+    <ion-button expand="full" color="primary" type="submit" (click)="editNote()" >Agregar</ion-button>
+  </form>
+</ion-content>
