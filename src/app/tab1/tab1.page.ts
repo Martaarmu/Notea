@@ -8,7 +8,7 @@ import { NoteService } from '../services/note.service';
 import { ModalController } from '@ionic/angular';
 import { EditNotePage } from '../pages/edit-note/edit-note.page';
 import { UtilsService } from '../services/utils.service';
-
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
 @Component({
   selector: 'app-tab1',
@@ -20,6 +20,7 @@ export class Tab1Page {
   @ViewChild(IonInfiniteScroll) infinite: IonInfiniteScroll;
 
   public notas: Note[] = [];
+  public nota:Note;
 
   constructor(private ns: NoteService,
     private utils: UtilsService,
@@ -67,9 +68,18 @@ export class Tab1Page {
     this.notas = this.notas.concat(nuevasNotas);
     $event.target.complete();
   }
-
-
-
+  public async escuchar(){
+    
+      await TextToSpeech.speak({
+        text: this.nota.description,
+        lang: 'es_ES',
+        rate: 1.0,
+        pitch: 1.0,
+        volume: 1.0,
+        category: 'ambient',
+      });
+    
+  }
 
 
   public async borra(nota: Note) {

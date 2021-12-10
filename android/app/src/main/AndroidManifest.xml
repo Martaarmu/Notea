@@ -36,6 +36,10 @@
     </application>
 
     <!-- Permissions -->
-
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+         </intent>
+    </queries>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

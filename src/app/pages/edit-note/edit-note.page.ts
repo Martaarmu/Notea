@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { Note } from 'src/app/model/Note';
 import { NoteService } from 'src/app/services/note.service';
@@ -34,6 +35,16 @@ export class EditNotePage implements OnInit {
   public cerrar() {
     this.modalController.dismiss();
   }
+
+  public async escuchar(){
+    
+      await TextToSpeech.speak({
+        text: this.nota.description,
+        lang: 'es-ES',
+        rate: 1.0,
+        
+      });
+}
 
   public async editNote() {
 
