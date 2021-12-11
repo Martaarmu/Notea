@@ -1,6 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonInfiniteScroll, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, IonInfiniteScroll, LoadingController, Platform, ToastController } from '@ionic/angular';
 import { Note } from '../model/Note';
 import { AuthService } from '../services/auth.service';
 import { NoteService } from '../services/note.service';
@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 import { EditNotePage } from '../pages/edit-note/edit-note.page';
 import { UtilsService } from '../services/utils.service';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { SpeechRecognition } from '@capacitor-community/speech-recognition';
 
 @Component({
   selector: 'app-tab1',
@@ -21,13 +22,31 @@ export class Tab1Page {
 
   public notas: Note[] = [];
   public nota:Note;
+  public isAndroid:boolean;
 
   constructor(private ns: NoteService,
     private utils: UtilsService,
     public alertController: AlertController,
     private authS: AuthService,
     private router: Router,
-    public modalController: ModalController) { }
+    public modalController: ModalController,
+    private platform:Platform) {
+
+      
+      
+      this.isAndroid=platform.is("android");
+
+     }
+
+  async ngOnInit(){
+    if (this.isAndroid){
+      let hasPermission=await SpeechRecognition.hasPermission();
+    if(!hasPermission.permission){
+      SpeechRecognition.requestPermission();
+    }
+    }
+    
+  }
 
   async ionViewDidEnter() {
     await this.cargaNotas();
@@ -73,7 +92,7 @@ export class Tab1Page {
     
       await TextToSpeech.speak({
         text: nota.description,
-        lang: 'es_ES',
+        lang: 'es-ES',
         rate: 1.0,
         
       });

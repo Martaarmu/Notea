@@ -18,4 +18,7 @@
     </ion-item>
     <ion-button expand="full" color="primary" type="submit" [disabled]="this.formNote.invalid">Agregar</ion-button>
   </form>
+  <ion-button *ngIf="this.isAndroid" (click)="grabar()">grabar</ion-button>
+  
+  
 </ion-content>

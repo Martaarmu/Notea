@@ -4,6 +4,7 @@ import com.getcapacitor.BridgeActivity;
 import android.os.Bundle;
 import com.codetrixstudio.capacitor.GoogleAuth.GoogleAuth;
 import com.capacitorjs.plugins.storage.StoragePlugin;
+import com.getcapacitor.community.speechrecognition.SpeechRecognition;
 
 
 public class MainActivity extends BridgeActivity {
@@ -15,6 +16,7 @@ public class MainActivity extends BridgeActivity {
         //Aquí los plugin no oficiales
         registerPlugin(GoogleAuth.class);
         registerPlugin(StoragePlugin.class);
+        registerPlugin(SpeechRecognition.class);
       
     }
 }
