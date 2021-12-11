@@ -68,15 +68,14 @@ export class Tab1Page {
     this.notas = this.notas.concat(nuevasNotas);
     $event.target.complete();
   }
-  public async escuchar(){
+
+  public async escuchar(nota:Note){
     
       await TextToSpeech.speak({
-        text: this.nota.description,
+        text: nota.description,
         lang: 'es_ES',
         rate: 1.0,
-        pitch: 1.0,
-        volume: 1.0,
-        category: 'ambient',
+        
       });
     
   }

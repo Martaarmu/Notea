@@ -36,15 +36,6 @@ export class EditNotePage implements OnInit {
     this.modalController.dismiss();
   }
 
-  public async escuchar(){
-    
-      await TextToSpeech.speak({
-        text: this.nota.description,
-        lang: 'es-ES',
-        rate: 1.0,
-        
-      });
-}
 
   public async editNote() {
 
