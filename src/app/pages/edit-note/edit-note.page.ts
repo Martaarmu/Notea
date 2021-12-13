@@ -60,15 +60,6 @@ export class EditNotePage implements OnInit {
     }
 
   }
-  public async escuchar(){
-    
-    await TextToSpeech.speak({
-      text: this.nota.description,
-      lang: 'es-ES',
-      rate: 1.0
-      
-    });
   
-}
 
 }

@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="success">
+  <ion-toolbar color="dark">
     <ion-title>
-      Notas
+      {{'Notes'| translate}}
     </ion-title>
     <ion-buttons slot="secondary">
       <ion-button fill="outline" (click)="logout()">
@@ -27,10 +27,10 @@
 
     <ion-item-sliding *ngFor="let nota of notas; let i=index"> 
       <ion-item-options side="start">
-        <ion-item-option color="warning" (click)="edita(nota)">
+        <ion-item-option color="dark" (click)="edita(nota)">
           <ion-icon name="create" style="zoom:2.0"></ion-icon>
         </ion-item-option>
-        <ion-item-option color="warning" (click)="escuchar(nota)">
+        <ion-item-option color="dark" (click)="escuchar(nota)">
           <ion-icon name="caret-forward-circle" style="zoom:2.0"></ion-icon>
         </ion-item-option>
       </ion-item-options>

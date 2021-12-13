@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+  <ion-toolbar color="dark">
     <ion-title>
-      Nueva Nota
+      {{'NEW NOTE'| translate | titlecase}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,16 +9,21 @@
 <ion-content [fullscreen]="true">
   <form [formGroup]="formNote" (ngSubmit)="addNote()">
     <ion-item>
-      <ion-label>Título</ion-label>
+      <ion-label>{{'Title'| translate}}</ion-label>
       <ion-input type="text" formControlName="title"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Descripción</ion-label>
+      <ion-label>{{'Description'| translate}}</ion-label>
       <ion-textarea type="text" formControlName="description"></ion-textarea>
     </ion-item>
-    <ion-button expand="full" color="primary" type="submit" [disabled]="this.formNote.invalid">Agregar</ion-button>
+    <ion-button expand="full" color="dark" type="submit" [disabled]="this.formNote.invalid">{{'Add'| translate}}</ion-button>
   </form>
-  <ion-button *ngIf="this.isAndroid" (click)="grabar()">grabar</ion-button>
+  <!-- <ion-button expand="full" color="dark" *ngIf="this.isAndroid" (click)="grabar(nota)">grabar</ion-button>-->
+ 
+
+  <ion-button expand="full" color="dark" *ngIf="this.isAndroid" (click)="grabar()">
+    <ion-icon name="mic"></ion-icon>
+  </ion-button>
   
   
 </ion-content>

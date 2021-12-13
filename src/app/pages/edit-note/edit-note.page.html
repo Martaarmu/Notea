@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Editando nota</ion-title>
+    <ion-title>{{'Update note'| translate}}</ion-title>
     <ion-buttons slot="end">
       <ion-icon name="close-circle" style="zoom:2.0" (click)="cerrar()"></ion-icon>
     </ion-buttons>
@@ -19,7 +19,7 @@
       
       <ion-textarea type="text" formControlName="description" [(ngModel)]="this.nota.description"></ion-textarea>
     </ion-item>
-    <ion-button expand="full" color="primary" type="submit" (click)="editNote()" >Agregar</ion-button>
+    <ion-button expand="full" color="dark" type="submit" (click)="editNote()">{{'Update'| translate}}</ion-button>
   </form>
-  <ion-button  (click)="escuchar()">escuchar</ion-button>
+  
 </ion-content>

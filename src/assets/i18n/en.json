@@ -2,5 +2,12 @@
     "HELLO":"hello",
     "BYE":"bye",
     "TAKE A PICTURE":"take a picture",
-    "CONTACTS" : "contacts"
+    "CONTACTS" : "contacts",
+    "NEW NOTE":"new note",
+    "Title":"Title",
+    "Description":"Description",
+    "Notes":"Notes",
+    "Update note":"Update note",
+    "Update":"Update",
+    "New":"New"
 }

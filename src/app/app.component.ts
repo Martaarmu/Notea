@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { App } from '@capacitor/app';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { async } from '@firebase/util';
 import { Platform } from '@ionic/angular';
@@ -13,27 +14,32 @@ import { LocalStorageService } from './services/local-storage.service';
 })
 export class AppComponent {
 
-  private langsAvailable=['es','en'];
-  private isAndroid=false;
+  private langsAvailable = ['es', 'en'];
+  private isAndroid = false;
 
-  constructor(private traductor:TranslateService, private storage:LocalStorageService,
-    private authS:AuthService, private platform:Platform) {
-    
-      this.isAndroid=this.platform.is("android");
+  constructor(private traductor: TranslateService, private storage: LocalStorageService,
+    private authS: AuthService, private platform: Platform) {
+
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      App.exitApp();
+    });
+
+
+    this.isAndroid = this.platform.is("android");
 
     //Esto se hace porque en el constructor no se puede await
-    (async ()=>{
-     let lang = await storage.getItem("lang");
-     if(lang == null){
-       lang=this.traductor.getBrowserLang();
-     }else{
-       lang=lang.lang;
-     }
-     if(this.langsAvailable.indexOf(lang)>-1){
-       traductor.setDefaultLang(lang);
-     }else{
-       traductor.setDefaultLang('en');
-     }
+    (async () => {
+      let lang = await storage.getItem("lang");
+      if (lang == null) {
+        lang = this.traductor.getBrowserLang();
+      } else {
+        lang = lang.lang;
+      }
+      if (this.langsAvailable.indexOf(lang) > -1) {
+        traductor.setDefaultLang(lang);
+      } else {
+        traductor.setDefaultLang('en');
+      }
     })();
 
     /*
@@ -47,10 +53,10 @@ export class AppComponent {
     */
   }
 
-  async ngOnInit(){
-    this.platform.ready().then(async ()=>{
-      this.isAndroid=this.platform.is("android");
-      if(!this.isAndroid)
+  async ngOnInit() {
+    this.platform.ready().then(async () => {
+      this.isAndroid = this.platform.is("android");
+      if (!this.isAndroid)
         await GoogleAuth.init();
       await this.authS.loadSession();
     })

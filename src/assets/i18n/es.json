@@ -2,5 +2,12 @@
     "HELLO":"hola",
     "BYE":"adiós",
     "TAKE A PICTURE":"Fotografiar",
-    "CONTACTS" : "contactos"
+    "CONTACTS" : "contactos",
+    "NEW NOTE":"NUEVA NOTA",
+    "Title":"Título",
+    "Description":"Descripción",
+    "Notes":"Notas",
+    "Update note":"Editando nota",
+    "Update":"Actualizar",
+    "New":"Nueva"
 }
