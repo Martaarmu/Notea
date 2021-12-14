@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonInfiniteScroll, LoadingController, Platform, ToastController } from '@ionic/angular';
+import { AlertController, IonInfiniteScroll, Platform, PopoverController, ToastController } from '@ionic/angular';
 import { Note } from '../model/Note';
 import { AuthService } from '../services/auth.service';
 import { NoteService } from '../services/note.service';
@@ -10,6 +10,7 @@ import { EditNotePage } from '../pages/edit-note/edit-note.page';
 import { UtilsService } from '../services/utils.service';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import { SpeechRecognition } from '@capacitor-community/speech-recognition';
+import { IdiomaPage } from '../pages/idioma/idioma.page';
 
 @Component({
   selector: 'app-tab1',
@@ -17,7 +18,7 @@ import { SpeechRecognition } from '@capacitor-community/speech-recognition';
   styleUrls: ['tab1.page.scss']
 })
 
-export class Tab1Page {
+export class Tab1Page implements OnInit{
   @ViewChild(IonInfiniteScroll) infinite: IonInfiniteScroll;
 
   public notas: Note[] = [];
@@ -30,10 +31,8 @@ export class Tab1Page {
     private authS: AuthService,
     private router: Router,
     public modalController: ModalController,
-    private platform:Platform) {
-
-      
-      
+    private platform:Platform,
+    private popoverController:PopoverController) {
       this.isAndroid=platform.is("android");
 
      }
@@ -111,7 +110,7 @@ export class Tab1Page {
           text: 'CANCELAR',
 
           handler: (blah) => {
-            //responde cancel no hacemos nada 
+            // responde cancel no hacemos nada 
           }
         }, {
           text: 'ELIMINAR',
@@ -120,7 +119,7 @@ export class Tab1Page {
 
             await this.utils.presentLoading();
             await this.ns.remove(nota.key);
-            //Para recargar la lista hacer esto es muy cutre!! -> await this.cargaNotas
+            // Para recargar la lista hacer esto es muy cutre!! -> await this.cargaNotas
             let i = this.notas.indexOf(nota, 0);
             if (i > -1) {
               this.notas.splice(i, 1);
@@ -171,6 +170,18 @@ export class Tab1Page {
     }
   }
 
+  
+    async presentPopover(ev: any) {
+      const popover = await this.popoverController.create({
+        component: IdiomaPage,
+        event: ev,
+        translucent: true
+      });
+      return await popover.present();
+    }
+  
+
+  
 
 
 

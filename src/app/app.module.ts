@@ -19,6 +19,7 @@ import { AuthService } from './services/auth.service';
 import { AuthguardService } from './services/authguard.service';
 import { UtilsService } from './services/utils.service';
 
+
 export function loadTraslator(http:HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/','.json');
 }

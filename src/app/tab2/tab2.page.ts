@@ -79,12 +79,8 @@ export class Tab2Page {
         let titulo = this.formNote.get("title").value;
         this.formNote.setValue({
           title: titulo,
-         // description: data.matches[0].charAt(0).toUpperCase() + data.matches[0].slice(1)
           description: data.matches[0].slice(0)
         });
-        data.matches.forEach(data => {
-          console.log("coincidencia: " + data);
-        })
 
       }).catch(err => {
         console.error(err);
