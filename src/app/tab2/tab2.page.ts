@@ -35,9 +35,10 @@ export class Tab2Page {
 
   ionViewDidEnter() { }
 
+  /**
+   * Añade notas a la BD haciendo uso de NoteService
+   */
   public async addNote() {
-
-
     let newNote: Note = {
       title: this.formNote.get("title").value,
       description: this.formNote.get("description").value
@@ -61,6 +62,9 @@ export class Tab2Page {
 
   }
 
+  /**
+   * Añade la descripción de la nota mediante reconocimiento de voz
+   */
   public async grabar() {
     if (await SpeechRecognition.available()) {
       SpeechRecognition.start({
@@ -70,12 +74,6 @@ export class Tab2Page {
         partialResults: true,
         popup: false,
       }).then(async (data) => {
-        console.log(data);
-        /// const resultado:any = "hola"
-        // if(data.matches.includes(resultado)){
-        //   console.log("aquiiiiii")
-        //   this.router.navigate(["private/tabs/tab1"]);
-        //}
         let titulo = this.formNote.get("title").value;
         this.formNote.setValue({
           title: titulo,

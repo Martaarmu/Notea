@@ -17,11 +17,16 @@ export class NoteService {
     this.myCollection = db.collection<any>(environment.firebaseConfig.todoCollection);
   }
 
+  /**
+   * 
+   * @param note Añade notas a la BD
+   * @returns 
+   */
   public addNote(note: Note): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
         let response: DocumentReference<firebase.default.firestore.DocumentData> = await this.myCollection.add({title:note.title,
-          description:note.description}); //no ponemos el add(note) para que no me meta el id 
+          description:note.description}); 
         resolve(response.id);
       } catch (error) {
         reject(error);
@@ -31,6 +36,7 @@ export class NoteService {
 
   //funcion flecha ref=>{} cuando solo tiene un return podemos hacer ref=>ref.limit.......
     /**
+     * Obtiene todas las notas de la BD
    * getNotesByPage() -> page=1,criteria=undefined
    * getNotesByPage(2) -> page=2, criteria=undefined
    * getNotesByPage(2,'title')
@@ -64,57 +70,63 @@ export class NoteService {
                 result.push({ 'key': id, ...tmp });
                 //operador spread-> 'title':tmp.title,'description':tmp.description
               })
-              observer.next(result);  ///este es el return del observable que devolvemos
+              observer.next(result);  
               observer.complete();
-            }) //final del subscribe
-      }); //final del return observable
+            }) 
+      }); 
     }
 
-    ///INUTILIZADO ??
+    ///INUTILIZADO 
   public getNotes(): Observable<Note[]> {
     return new Observable((observer) => {
       let result: Note[] = [];
       this.myCollection.get().subscribe(
         (data: firebase.default.firestore.QuerySnapshot<firebase.default.firestore.DocumentData>) => {
           data.docs.forEach((d: firebase.default.firestore.DocumentData) => {
-            let tmp = d.data(); //devuelve el bojeto almacenado -> la nota con title 
-            let id = d.id;      //devuelve el key del objeto
+            let tmp = d.data();
+            let id = d.id;
             result.push({ 'key': id, ...tmp });
             //operador spread -> title:tmp.title, description:tmp.description
           })
           observer.next(result);
           observer.complete();
-        })//final del suscribe
+        })
+    })
+  }
 
-    })//final del return obserbable
-  }//final del metodo getNotes
-
-
+  /**
+   * Devuelve una nota 
+   * @param id 
+   * @returns
+   */
   public getNote(id: string):Promise<Note> {
     return new Promise(async(resolve,reject)=>{
       let note:Note=null;
       try {
-        let result:firebase.default.firestore.DocumentData=await this.myCollection.doc(id).get().toPromise; //se podria usar un subcribe
+        let result:firebase.default.firestore.DocumentData=await this.myCollection.doc(id).get().toPromise;
         note=result.data;
-        /*note = {
-          id:result.id, ... result.data()
-        }*/
         resolve(note);
       } catch (error) {
         reject(error)
       }
-    
-       
       })
-    
   }
 
+  /**
+   * Elimina una nota de la BD
+   * @param id 
+   * @returns 
+   */
   public remove(id:string):Promise<void>{
     return this.myCollection.doc(id).delete();
   }
 
+  /**
+   * Edita una nota de la BD
+   * @param note 
+   * @returns 
+   */
   public  editNote(note:Note): Promise<string> {
-
     return new Promise(async (resolve, reject) => {
       try {
         let response: any = await this.myCollection.doc(note.key).update({title:note.title,

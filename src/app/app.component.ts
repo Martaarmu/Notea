@@ -42,15 +42,6 @@ export class AppComponent {
       }
     })();
 
-    /*
-    //Detectar el lenguaje del navegador
-    const lang=this.traductor.getBrowserLang();
-    if (this.langsAvailable.indexOf(lang)>-1) {
-      traductor.setDefaultLang(lang);
-    } else {
-      traductor.setDefaultLang('en');
-    }
-    */
   }
 
   async ngOnInit() {

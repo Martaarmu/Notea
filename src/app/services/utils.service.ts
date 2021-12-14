@@ -11,6 +11,10 @@ export class UtilsService {
   constructor(private loading: LoadingController,
     private toast:ToastController) { }
 
+
+  /**
+   * Presenta un loading
+   */
   async presentLoading(){
     this.miLoading = await this.loading.create({
       message: 'Por favor espere...',
@@ -18,6 +22,11 @@ export class UtilsService {
     await this.miLoading.present();
   }
 
+  /**
+   * Presenta un toast
+   * @param msg 
+   * @param clr 
+   */
   async presentToast(msg: string, clr: string) {
     const miToast = await this.toast.create({
       message: msg,

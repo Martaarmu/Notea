@@ -32,11 +32,16 @@ export class EditNotePage implements OnInit {
     });
   }
 
+  /**
+   * Cierra el modal
+   */
   public cerrar() {
     this.modalController.dismiss();
   }
 
-
+  /**
+   * Edita nota haciendo uso del servicio -> NoteService
+   */
   public async editNote() {
 
     let newNote: Note = {

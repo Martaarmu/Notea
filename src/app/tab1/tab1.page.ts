@@ -33,10 +33,14 @@ export class Tab1Page implements OnInit{
     public modalController: ModalController,
     private platform:Platform,
     private popoverController:PopoverController) {
+
       this.isAndroid=platform.is("android");
 
      }
 
+  /**
+   * Pide permiso para acceder al microfono
+   */
   async ngOnInit(){
     if (this.isAndroid){
       let hasPermission=await SpeechRecognition.hasPermission();
@@ -47,10 +51,17 @@ export class Tab1Page implements OnInit{
     
   }
 
+  /**
+   * Carga las notas cuando entramos en la página
+   */
   async ionViewDidEnter() {
     await this.cargaNotas();
   }
 
+  /**
+   * Método que carga notas
+   * @param event 
+   */
   public async cargaNotas(event?) {
     if (this.infinite) {
       this.infinite.disabled = false;
@@ -72,11 +83,19 @@ export class Tab1Page implements OnInit{
       }
     }
   }
+
+  /**
+   * Cierra sesión
+   */
   public async logout() {
     await this.authS.logout();
     this.router.navigate(['']);
   }
 
+  /**
+   * Carga notas de manera paginada
+   * @param $event 
+   */
   public async cargaInfinita($event) {
     console.log("CARGAND");
     let nuevasNotas = await this.ns.getNotesByPage().toPromise();
@@ -87,6 +106,10 @@ export class Tab1Page implements OnInit{
     $event.target.complete();
   }
 
+  /**
+   * Escuchar la descipcion de la nota
+   * @param nota 
+   */
   public async escuchar(nota:Note){
     
       await TextToSpeech.speak({
@@ -99,6 +122,10 @@ export class Tab1Page implements OnInit{
   }
 
 
+  /**
+   * Borra nota
+   * @param nota 
+   */
   public async borra(nota: Note) {
 
     const alert = await this.alertController.create({

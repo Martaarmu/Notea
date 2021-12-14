@@ -16,6 +16,7 @@ export class IdiomaPage implements OnInit {
   ngOnInit() {
   }
 
+  /**Detecta el idioma del dispositivo*/
   async ionViewDidEnter(){
     const lang=this.traductor.getDefaultLang();
     if(lang=='es'){
@@ -24,8 +25,12 @@ export class IdiomaPage implements OnInit {
       this.mitoogle.checked=true;
     }
   }
+  
+  /**
+   * Cambia de idioma la app
+   * @param event 
+   */
   public async cambiaIdioma(event){
-    console.log(event)
     if(event && event.detail && event.detail.checked){
       await this.storage.setItem('lang',{lang:'en'})
       this.traductor.use('en');

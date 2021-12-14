@@ -6,7 +6,7 @@ import { Storage } from '@capacitor/storage';
 })
 export class LocalStorageService {
 
-  constructor() { } //Se ve que los plugins de capacitor no hace falta meterlos en el constructor
+  constructor() { } //Los plugins de capacitor no hace falta meterlos en el constructor
 
   /**
    * 
