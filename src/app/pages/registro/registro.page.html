@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <form [formGroup]="regForm" (ngSubmit)="onSubmit()">
+          <ion-item lines="full">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input id="inputEmail" type="text" placeholder="ejemplo@email.com" formControlName="email" required>
+            </ion-input>
+          </ion-item>
+          <ion-item lines="full">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input id="inputPassword" type="password" placeholder="Contraseña" formControlName="password" required>
+            </ion-input>
+          </ion-item>
+        <ion-button type="submit" color="dark" [disabled]="!regForm.valid" expand="block">Registrar</ion-button>
+        <ion-button color="dark" expand="block" type="button" (click)="backLogin()">Volver </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -34,7 +34,7 @@ export class Tab1Page implements OnInit{
     private platform:Platform,
     private popoverController:PopoverController) {
 
-      this.isAndroid=platform.is("android");
+      //this.isAndroid=platform.is("android");
 
      }
 

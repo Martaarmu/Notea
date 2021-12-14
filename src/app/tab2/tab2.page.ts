@@ -5,8 +5,6 @@ import { NoteService } from '../services/note.service';
 import { UtilsService } from '../services/utils.service';
 import { SpeechRecognition } from '@capacitor-community/speech-recognition';
 import { Platform } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { promise } from 'protractor';
 
 @Component({
   selector: 'app-tab2',
@@ -21,8 +19,7 @@ export class Tab2Page {
   constructor(private fb: FormBuilder,
     private noteS: NoteService,
     private utils: UtilsService,
-    private platform: Platform,
-    private router: Router) {
+    private platform: Platform) {
 
     this.isAndroid = platform.is("android");
 

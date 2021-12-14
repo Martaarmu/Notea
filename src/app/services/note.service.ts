@@ -1,4 +1,4 @@
-import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/compat/firestore';
 import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -18,8 +18,8 @@ export class NoteService {
   }
 
   /**
-   * 
-   * @param note Añade notas a la BD
+   * Añade notas a la BD
+   * @param note 
    * @returns 
    */
   public addNote(note: Note): Promise<string> {

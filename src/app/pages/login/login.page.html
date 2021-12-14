@@ -6,8 +6,42 @@
 <hr>
 <hr>
 <ion-content>
-  <ion-img src="../../../assets/icon.jpg"></ion-img>
-  <ion-button expand="block" color="dark" (click)="singin()">Entrar
-    <ion-icon slot="start" name="person"></ion-icon>
-  </ion-button>
+  
+  
+  <ion-card>
+    <ion-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div style="margin-left: 80px;">
+          <ion-item lines="full" >
+            <ion-img src="../../../assets/logo.jpg"></ion-img>
+          </ion-item>
+        </div>
+       
+        
+        <ion-item lines="full">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input id="inputEmail" type="text" placeholder="ejemplo@email.com" formControlName="email" required ></ion-input>
+        </ion-item>
+        <ion-item lines="full">
+          <ion-label position="floating">Password</ion-label>
+          <ion-input id="inputPassword" type="password" placeholder="Contraseña" formControlName="password" required ></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="dark" type="submit" [disabled]="!loginForm.valid">Entrar
+          <ion-icon slot="start" name="person"></ion-icon>
+        </ion-button>
+        <ion-button expand="block" color="dark" (click)="singin()">Inicia con Google
+          <ion-icon slot="start" name="logo-google"></ion-icon>
+        </ion-button>
+        <div style="margin-left: 80px;">
+          <ion-item lines="full" >
+            <a routerLink='../registro'>Registrate AQUI</a>
+          </ion-item>
+        </div>
+        
+      </form>
+    </ion-card-content>
+  </ion-card>
+    
+
+  
 </ion-content>
